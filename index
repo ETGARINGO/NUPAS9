@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Landing Page</title>
+</head>
+<body style="margin:0;">
+  <iframe 
+    src="https://script.google.com/macros/s/AKfycbyeTOJvnk7IYSvtX0-QUh57Jy6WFre8OvSLpFLD9CfS0ijpKi0syZ0kXm61274L78kRNw/exec"
+    width="100%" 
+    height="100vh"
+    style="border:none;">
+  </iframe>
+</body>
+</html>
