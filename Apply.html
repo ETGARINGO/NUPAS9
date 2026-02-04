@@ -12,13 +12,22 @@
         :root {
             --pnp-blue: #003399;
             --pnp-gold: #ffd700;
+            --cyber-cyan: #00f2ff;
             --dark-base: #020b16;
         }
 
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%; 
             overflow: hidden; background-color: var(--dark-base);
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Animated Background Grid */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0, 51, 153, 0.15) 0%, rgba(2, 11, 22, 1) 100%);
+            z-index: -1;
         }
 
         /* --- ENTRANCE ANIMATION --- */
@@ -35,8 +44,8 @@
         }
 
         .logo-container {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             margin-bottom: 30px;
             position: relative;
             display: flex;
@@ -49,18 +58,19 @@
             height: 100%;
             object-fit: contain;
             z-index: 2;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
         }
 
         /* Glowing Pulse behind the logo */
         .logo-glow {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 120%;
+            height: 120%;
             background: var(--pnp-gold);
             border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.2;
-            animation: pulse-glow 2s infinite;
+            filter: blur(45px);
+            opacity: 0.15;
+            animation: pulse-glow 2s infinite ease-in-out;
             z-index: 1;
         }
 
@@ -69,10 +79,11 @@
             font-family: 'Courier New', monospace;
             font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
-        /* --- MAIN UI --- */
+        /* --- MAIN INTERFACE --- */
         .main-wrapper {
             opacity: 0;
             transform: scale(1.05);
@@ -87,31 +98,59 @@
 
         header {
             background: linear-gradient(to bottom, var(--pnp-blue), #002266);
-            padding: 15px;
+            padding: 20px;
             text-align: center;
             border-bottom: 3px solid var(--pnp-gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            z-index: 10;
         }
 
-        .header-title { color: white; margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
-        .header-subtitle { color: var(--pnp-gold); font-size: 0.85rem; font-weight: bold; }
+        .header-title { 
+            color: white; 
+            margin: 0; 
+            font-size: 1.5rem; 
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        .header-subtitle { 
+            color: var(--pnp-gold); 
+            font-size: 0.9rem; 
+            font-weight: bold;
+            margin-top: 5px;
+        }
 
         .iframe-container {
             flex-grow: 1;
-            margin: 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            margin: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
             overflow: hidden;
-            background: #fff; /* Ensures form readability */
+            background: #ffffff;
             position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
         }
 
         iframe { width: 100%; height: 100%; border: none; }
 
+        /* UI HUD Elements */
+        .bracket {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--pnp-blue);
+            z-index: 5;
+            pointer-events: none;
+        }
+        .tl { top: 0; left: 0; border-right: none; border-bottom: none; border-top-left-radius: 8px; }
+        .tr { top: 0; right: 0; border-left: none; border-bottom: none; border-top-right-radius: 8px; }
+        .bl { bottom: 0; left: 0; border-right: none; border-top: none; border-bottom-left-radius: 8px; }
+        .br { bottom: 0; right: 0; border-left: none; border-top: none; border-bottom-right-radius: 8px; }
+
         @keyframes pulse-glow {
-            0% { transform: scale(0.9); opacity: 0.1; }
-            50% { transform: scale(1.1); opacity: 0.3; }
-            100% { transform: scale(0.9); opacity: 0.1; }
+            0% { transform: scale(0.85); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.25; }
+            100% { transform: scale(0.85); opacity: 0.1; }
         }
     </style>
 </head>
@@ -122,16 +161,23 @@
             <div class="logo-glow"></div>
             <img src="pro9.png" alt="PRO9 Logo">
         </div>
-        <div class="terminal-text" id="status-msg">Securing Connection...</div>
+        <div class="terminal-text" id="status-msg">SECURE CONNECTION INITIALIZED...</div>
     </div>
+
+    <div class="bg-overlay"></div>
 
     <div class="main-wrapper">
         <header>
             <h1 class="header-title">POLICE REGIONAL OFFICE 9</h1>
-            <div class="header-subtitle">RECRUITMENT APPLICATION SYSTEM</div>
+            <div class="header-subtitle">ZAMBOANGA PENINSULA | RECRUITMENT PORTAL</div>
         </header>
 
         <div class="iframe-container">
+            <div class="bracket tl"></div>
+            <div class="bracket tr"></div>
+            <div class="bracket bl"></div>
+            <div class="bracket br"></div>
+            
             <iframe 
                 src="https://script.google.com/macros/s/AKfycbwbi7dy73O6W-4e6NKnWyTuz-2mENEr7jje7PuE8N_vP-k8Zm8LSl7FqROLr149sgh2FA/exec" 
                 allowfullscreen>
@@ -140,17 +186,28 @@
     </div>
 
     <script>
-        window.addEventListener('load', () => {
-            const status = document.getElementById('status-msg');
-            
-            // Short sequence to show off the logo and animation
-            setTimeout(() => { status.innerText = "Verifying Credentials..."; }, 1000);
-            setTimeout(() => { status.innerText = "Access Authorized."; }, 2000);
-            
-            setTimeout(() => {
-                document.body.classList.add('ready');
-            }, 2600);
-        });
+        const status = document.getElementById('status-msg');
+        const logs = [
+            "Initializing PNP Secure Server...",
+            "Authenticating PRO9 Credentials...",
+            "Decrypting Recruitment Modules...",
+            "Identity Verified. Access Granted."
+        ];
+
+        let i = 0;
+        function playBoot() {
+            if (i < logs.length) {
+                status.innerText = logs[i];
+                i++;
+                setTimeout(playBoot, 700);
+            } else {
+                setTimeout(() => {
+                    document.body.classList.add('ready');
+                }, 500);
+            }
+        }
+
+        window.onload = playBoot;
     </script>
 </body>
 </html>
