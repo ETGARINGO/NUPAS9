@@ -7,23 +7,189 @@
     <link rel="icon" type="image/png" href="pro9.png">
     <link rel="apple-touch-icon" href="pro9.png">
     
-    <title>PRO9 Recruitment System</title>
+    <title>PRO9 Recruitment | Official Portal</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #0a192f; }
-        iframe {
+        :root {
+            --pnp-blue: #003399;
+            --pnp-gold: #ffd700;
+            --dark-base: #020b16;
+            --scan-light: rgba(255, 215, 0, 0.4);
+        }
+
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            overflow: hidden; background-color: var(--dark-base);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* --- LIGHTING ENTRANCE EFFECT --- */
+        #boot-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        /* The Lighting Scan Beam */
+        #boot-screen::after {
+            content: "";
             position: absolute;
-            top: 0;
+            top: -100%;
             left: 0;
             width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--scan-light), transparent);
+            animation: scan-light 2.5s infinite;
+        }
+
+        @keyframes scan-light {
+            0% { top: -100%; }
+            50% { top: 100%; }
+            100% { top: 100%; }
+        }
+
+        .logo-container {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 30px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo-container img {
+            width: 100%;
             height: 100%;
-            border: none;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+        }
+
+        .logo-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--pnp-gold);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.2;
+            animation: pulse-glow 2s infinite;
+        }
+
+        .terminal-text {
+            color: var(--pnp-gold);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+
+        /* --- MAIN UI --- */
+        .main-wrapper {
+            opacity: 0;
+            transform: scale(1.02);
+            transition: all 0.8s ease-out;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.ready #boot-screen { transform: translateY(-100%); }
+        body.ready .main-wrapper { opacity: 1; transform: scale(1); }
+
+        header {
+            background: linear-gradient(to bottom, var(--pnp-blue), #002266);
+            padding: 10px;
+            text-align: center;
+            border-bottom: 2px solid var(--pnp-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .header-title { color: white; margin: 0; font-size: 1.2rem; letter-spacing: 1px; }
+        .header-subtitle { color: var(--pnp-gold); font-size: 0.75rem; font-weight: bold; }
+
+        .iframe-container {
+            flex-grow: 1;
+            margin: 10px 15px 5px 15px; /* Reduced bottom margin for minimal footer */
+            border-radius: 6px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            overflow: hidden;
+            background: #fff;
+            position: relative;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- MINIMALIZED FOOTER --- */
+        footer {
+            height: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(0.9); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+            100% { transform: scale(0.9); opacity: 0.1; }
         }
     </style>
 </head>
 <body>
-    <iframe 
-        src="https://script.google.com/macros/s/AKfycbwbi7dy73O6W-4e6NKnWyTuz-2mENEr7jje7PuE8N_vP-k8Zm8LSl7FqROLr149sgh2FA/exec" 
-        allowfullscreen>
-    </iframe>
+
+    <div id="boot-screen">
+        <div class="logo-container">
+            <div class="logo-glow"></div>
+            <img src="pro9.png" alt="PRO9 Logo">
+        </div>
+        <div class="terminal-text" id="status-msg">Initiating System Scan...</div>
+    </div>
+
+    <div class="main-wrapper">
+        <header>
+            <h1 class="header-title">POLICE REGIONAL OFFICE 9</h1>
+            <div class="header-subtitle">RECRUITMENT APPLICATION SYSTEM</div>
+        </header>
+
+        <div class="iframe-container">
+            <iframe 
+                src="https://script.google.com/macros/s/AKfycbwbi7dy73O6W-4e6NKnWyTuz-2mENEr7jje7PuE8N_vP-k8Zm8LSl7FqROLr149sgh2FA/exec" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <footer>
+            <div class="footer-text">© 2026 PRO9 Secure Portal | Official Government Use Only</div>
+        </footer>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const status = document.getElementById('status-msg');
+            
+            setTimeout(() => { status.innerText = "Verifying Secure Link..."; }, 1200);
+            setTimeout(() => { status.innerText = "Handshake Complete."; }, 2200);
+            
+            setTimeout(() => {
+                document.body.classList.add('ready');
+            }, 3000);
+        });
+    </script>
 </body>
 </html>
