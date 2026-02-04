@@ -13,6 +13,7 @@
             --pnp-blue: #003399;
             --pnp-gold: #ffd700;
             --dark-base: #020b16;
+            --scan-light: rgba(255, 215, 0, 0.4);
         }
 
         body, html { 
@@ -21,7 +22,7 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* --- ENTRANCE ANIMATION --- */
+        /* --- LIGHTING ENTRANCE EFFECT --- */
         #boot-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -34,6 +35,24 @@
             transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
+        /* The Lighting Scan Beam */
+        #boot-screen::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--scan-light), transparent);
+            animation: scan-light 2.5s infinite;
+        }
+
+        @keyframes scan-light {
+            0% { top: -100%; }
+            50% { top: 100%; }
+            100% { top: 100%; }
+        }
+
         .logo-container {
             width: 180px;
             height: 180px;
@@ -42,16 +61,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 10;
         }
 
         .logo-container img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            z-index: 2;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
         }
 
-        /* Glowing Pulse behind the logo */
         .logo-glow {
             position: absolute;
             width: 100%;
@@ -61,7 +80,6 @@
             filter: blur(40px);
             opacity: 0.2;
             animation: pulse-glow 2s infinite;
-            z-index: 1;
         }
 
         .terminal-text {
@@ -70,12 +88,13 @@
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 2px;
+            z-index: 10;
         }
 
         /* --- MAIN UI --- */
         .main-wrapper {
             opacity: 0;
-            transform: scale(1.05);
+            transform: scale(1.02);
             transition: all 0.8s ease-out;
             height: 100vh;
             display: flex;
@@ -87,26 +106,43 @@
 
         header {
             background: linear-gradient(to bottom, var(--pnp-blue), #002266);
-            padding: 8px;
+            padding: 10px;
             text-align: center;
-            border-bottom: 3px solid var(--pnp-gold);
+            border-bottom: 2px solid var(--pnp-gold);
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .header-title { color: white; margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
-        .header-subtitle { color: var(--pnp-gold); font-size: 0.85rem; font-weight: bold; }
+        .header-title { color: white; margin: 0; font-size: 1.2rem; letter-spacing: 1px; }
+        .header-subtitle { color: var(--pnp-gold); font-size: 0.75rem; font-weight: bold; }
 
         .iframe-container {
             flex-grow: 1;
-            margin: 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            margin: 10px 15px 5px 15px; /* Reduced bottom margin for minimal footer */
+            border-radius: 6px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
             overflow: hidden;
-            background: #fff; /* Ensures form readability */
+            background: #fff;
             position: relative;
         }
 
         iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- MINIMALIZED FOOTER --- */
+        footer {
+            height: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
         @keyframes pulse-glow {
             0% { transform: scale(0.9); opacity: 0.1; }
@@ -122,7 +158,7 @@
             <div class="logo-glow"></div>
             <img src="pro9.png" alt="PRO9 Logo">
         </div>
-        <div class="terminal-text" id="status-msg">Securing Connection...</div>
+        <div class="terminal-text" id="status-msg">Initiating System Scan...</div>
     </div>
 
     <div class="main-wrapper">
@@ -137,19 +173,22 @@
                 allowfullscreen>
             </iframe>
         </div>
+
+        <footer>
+            <div class="footer-text">© 2026 PRO9 Secure Portal | Official Government Use Only</div>
+        </footer>
     </div>
 
     <script>
         window.addEventListener('load', () => {
             const status = document.getElementById('status-msg');
             
-            // Short sequence to show off the logo and animation
-            setTimeout(() => { status.innerText = "Verifying Credentials..."; }, 1000);
-            setTimeout(() => { status.innerText = "Access Authorized."; }, 2000);
+            setTimeout(() => { status.innerText = "Verifying Secure Link..."; }, 1200);
+            setTimeout(() => { status.innerText = "Handshake Complete."; }, 2200);
             
             setTimeout(() => {
                 document.body.classList.add('ready');
-            }, 2600);
+            }, 3000);
         });
     </script>
 </body>
