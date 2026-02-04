@@ -12,25 +12,16 @@
         :root {
             --pnp-blue: #003399;
             --pnp-gold: #ffd700;
-            --cyber-cyan: #00f2ff;
-            --dark-base: #0a0e14;
+            --dark-base: #020b16;
         }
 
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%; 
             overflow: hidden; background-color: var(--dark-base);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Video/Background Overlay */
-        .bg-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(10,25,47,0.8) 0%, rgba(2,11,22,1) 100%);
-            z-index: -1;
-        }
-
-        /* --- ENTRANCE ANIMATION COMPONENTS --- */
+        /* --- ENTRANCE ANIMATION --- */
         #boot-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -43,133 +34,104 @@
             transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        .pnp-logo-placeholder {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 20px;
-            border: 2px solid var(--pnp-gold);
-            border-radius: 50%;
+        .logo-container {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 30px;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--pnp-gold);
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-            animation: pulse 2s infinite;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 2;
+        }
+
+        /* Glowing Pulse behind the logo */
+        .logo-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--pnp-gold);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.2;
+            animation: pulse-glow 2s infinite;
+            z-index: 1;
         }
 
         .terminal-text {
-            color: #00ff00;
+            color: var(--pnp-gold);
             font-family: 'Courier New', monospace;
             font-size: 14px;
-            text-align: center;
-            min-height: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* --- MAIN INTERFACE --- */
+        /* --- MAIN UI --- */
         .main-wrapper {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s ease-out;
+            transform: scale(1.05);
+            transition: all 0.8s ease-out;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
+
+        body.ready #boot-screen { transform: translateY(-100%); }
+        body.ready .main-wrapper { opacity: 1; transform: scale(1); }
 
         header {
-            width: 100%;
-            padding: 15px 0;
+            background: linear-gradient(to bottom, var(--pnp-blue), #002266);
+            padding: 15px;
             text-align: center;
-            background: rgba(0, 51, 153, 0.2);
-            border-bottom: 1px solid var(--pnp-blue);
-            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--pnp-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .header-title {
-            color: white;
-            margin: 0;
-            letter-spacing: 2px;
-            font-size: 1.2rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .header-subtitle {
-            color: var(--pnp-gold);
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
+        .header-title { color: white; margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+        .header-subtitle { color: var(--pnp-gold); font-size: 0.85rem; font-weight: bold; }
 
         .iframe-container {
-            width: 95%;
-            max-width: 1200px;
             flex-grow: 1;
-            margin: 20px 0;
-            position: relative;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            background: rgba(255, 255, 255, 0.02);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-radius: 4px;
+            margin: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
             overflow: hidden;
+            background: #fff; /* Ensures form readability */
+            position: relative;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        iframe { width: 100%; height: 100%; border: none; }
 
-        /* UI Accents */
-        .bracket {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 3px solid var(--pnp-blue);
+        @keyframes pulse-glow {
+            0% { transform: scale(0.9); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+            100% { transform: scale(0.9); opacity: 0.1; }
         }
-        .tl { top: 0; left: 0; border-right: none; border-bottom: none; }
-        .tr { top: 0; right: 0; border-left: none; border-bottom: none; }
-        .bl { bottom: 0; left: 0; border-right: none; border-top: none; }
-        .br { bottom: 0; right: 0; border-left: none; border-top: none; }
-
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        body.ready #boot-screen {
-            transform: translateY(-100%);
-        }
-
-        body.ready .main-wrapper {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
     </style>
 </head>
 <body>
 
     <div id="boot-screen">
-        <div class="pnp-logo-placeholder">PRO9</div>
-        <div class="terminal-text" id="terminal">Establishing secure connection...</div>
+        <div class="logo-container">
+            <div class="logo-glow"></div>
+            <img src="pro9.png" alt="PRO9 Logo">
+        </div>
+        <div class="terminal-text" id="status-msg">Securing Connection...</div>
     </div>
-
-    <div class="bg-overlay"></div>
 
     <div class="main-wrapper">
         <header>
             <h1 class="header-title">POLICE REGIONAL OFFICE 9</h1>
-            <div class="header-subtitle">ZAMBOANGA PENINSULA | RECRUITMENT PORTAL</div>
+            <div class="header-subtitle">RECRUITMENT APPLICATION SYSTEM</div>
         </header>
 
         <div class="iframe-container">
-            <div class="bracket tl"></div>
-            <div class="bracket tr"></div>
-            <div class="bracket bl"></div>
-            <div class="bracket br"></div>
-            
             <iframe 
                 src="https://script.google.com/macros/s/AKfycbwbi7dy73O6W-4e6NKnWyTuz-2mENEr7jje7PuE8N_vP-k8Zm8LSl7FqROLr149sgh2FA/exec" 
                 allowfullscreen>
@@ -178,28 +140,17 @@
     </div>
 
     <script>
-        const terminal = document.getElementById('terminal');
-        const messages = [
-            "Initializing PNP Secure Server...",
-            "Authenticating PRO9 Credentials...",
-            "Loading Recruitment Modules...",
-            "Access Granted. Welcome to PRO9."
-        ];
-
-        let msgIndex = 0;
-        function updateTerminal() {
-            if (msgIndex < messages.length) {
-                terminal.innerText = messages[msgIndex];
-                msgIndex++;
-                setTimeout(updateTerminal, 600);
-            } else {
-                setTimeout(() => {
-                    document.body.classList.add('ready');
-                }, 400);
-            }
-        }
-
-        window.onload = updateTerminal;
+        window.addEventListener('load', () => {
+            const status = document.getElementById('status-msg');
+            
+            // Short sequence to show off the logo and animation
+            setTimeout(() => { status.innerText = "Verifying Credentials..."; }, 1000);
+            setTimeout(() => { status.innerText = "Access Authorized."; }, 2000);
+            
+            setTimeout(() => {
+                document.body.classList.add('ready');
+            }, 2600);
+        });
     </script>
 </body>
 </html>
