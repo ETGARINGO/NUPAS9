@@ -13,7 +13,7 @@
             --pnp-blue: #003399;
             --pnp-gold: #ffd700;
             --dark-base: #020b16;
-            --scan-light: rgba(255, 215, 0, 0.4);
+            --scan-color: rgba(255, 215, 0, 0.5);
         }
 
         body, html { 
@@ -22,35 +22,36 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* --- LIGHTING ENTRANCE EFFECT --- */
+        /* --- ADVANCED LIGHTING ENTRANCE --- */
         #boot-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
+            background: radial-gradient(circle at center, #051020 0%, #000 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
-            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+            transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        /* The Lighting Scan Beam */
-        #boot-screen::after {
-            content: "";
+        /* Moving Light Scan Beam */
+        .lighting-sweep {
             position: absolute;
-            top: -100%;
+            top: -20%;
             left: 0;
             width: 100%;
-            height: 100px;
-            background: linear-gradient(to bottom, transparent, var(--scan-light), transparent);
-            animation: scan-light 2.5s infinite;
+            height: 15vh;
+            background: linear-gradient(to bottom, transparent, var(--scan-color), transparent);
+            filter: blur(5px);
+            opacity: 0.6;
+            animation: sweep 2s infinite ease-in-out;
+            pointer-events: none;
         }
 
-        @keyframes scan-light {
-            0% { top: -100%; }
-            50% { top: 100%; }
-            100% { top: 100%; }
+        @keyframes sweep {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1200%); }
         }
 
         .logo-container {
@@ -61,110 +62,116 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10;
         }
 
         .logo-container img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+            z-index: 2;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+            animation: flicker 4s infinite;
         }
 
+        /* Glow Light Aura */
         .logo-glow {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--pnp-gold);
+            width: 130%;
+            height: 130%;
+            background: radial-gradient(circle, var(--pnp-gold) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.2;
-            animation: pulse-glow 2s infinite;
+            filter: blur(50px);
+            opacity: 0.15;
+            animation: pulse-glow 2s infinite alternate;
         }
 
         .terminal-text {
             color: var(--pnp-gold);
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            z-index: 10;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px var(--pnp-gold);
         }
 
         /* --- MAIN UI --- */
         .main-wrapper {
             opacity: 0;
-            transform: scale(1.02);
-            transition: all 0.8s ease-out;
+            transform: translateY(20px);
+            transition: all 1s ease-out;
             height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         body.ready #boot-screen { transform: translateY(-100%); }
-        body.ready .main-wrapper { opacity: 1; transform: scale(1); }
+        body.ready .main-wrapper { opacity: 1; transform: translateY(0); }
 
         header {
-            background: linear-gradient(to bottom, var(--pnp-blue), #002266);
-            padding: 10px;
+            background: linear-gradient(180deg, var(--pnp-blue) 0%, #001a4d 100%);
+            padding: 12px;
             text-align: center;
             border-bottom: 2px solid var(--pnp-gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
         }
 
-        .header-title { color: white; margin: 0; font-size: 1.2rem; letter-spacing: 1px; }
-        .header-subtitle { color: var(--pnp-gold); font-size: 0.75rem; font-weight: bold; }
+        .header-title { color: #fff; margin: 0; font-size: 1.3rem; font-weight: 700; }
+        .header-subtitle { color: var(--pnp-gold); font-size: 0.8rem; letter-spacing: 1px; }
 
         .iframe-container {
             flex-grow: 1;
-            margin: 10px 15px 5px 15px; /* Reduced bottom margin for minimal footer */
-            border-radius: 6px;
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            overflow: hidden;
+            margin: 10px 10px 5px 10px;
+            border-radius: 4px;
             background: #fff;
             position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
         iframe { width: 100%; height: 100%; border: none; }
 
         /* --- MINIMALIZED FOOTER --- */
         footer {
-            height: 25px;
-            background: rgba(0, 0, 0, 0.3);
+            height: 20px;
+            background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-top: 1px solid rgba(255, 215, 0, 0.1);
         }
 
         .footer-text {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 10px;
-            letter-spacing: 1px;
+            color: #444;
+            font-size: 9px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        /* ANIMATIONS */
         @keyframes pulse-glow {
-            0% { transform: scale(0.9); opacity: 0.1; }
-            50% { transform: scale(1.1); opacity: 0.3; }
-            100% { transform: scale(0.9); opacity: 0.1; }
+            from { opacity: 0.1; transform: scale(0.9); }
+            to { opacity: 0.25; transform: scale(1.1); }
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.7; }
         }
     </style>
 </head>
 <body>
 
     <div id="boot-screen">
+        <div class="lighting-sweep"></div>
         <div class="logo-container">
             <div class="logo-glow"></div>
             <img src="pro9.png" alt="PRO9 Logo">
         </div>
-        <div class="terminal-text" id="status-msg">Initiating System Scan...</div>
+        <div class="terminal-text" id="status-msg">System Scanning...</div>
     </div>
 
     <div class="main-wrapper">
         <header>
             <h1 class="header-title">POLICE REGIONAL OFFICE 9</h1>
-            <div class="header-subtitle">RECRUITMENT APPLICATION SYSTEM</div>
+            <div class="header-subtitle">SECURE RECRUITMENT PORTAL</div>
         </header>
 
         <div class="iframe-container">
@@ -175,7 +182,7 @@
         </div>
 
         <footer>
-            <div class="footer-text">© 2026 PRO9 Secure Portal | Official Government Use Only</div>
+            <div class="footer-text">Official PRO9 Recruitment System © 2026</div>
         </footer>
     </div>
 
@@ -183,12 +190,12 @@
         window.addEventListener('load', () => {
             const status = document.getElementById('status-msg');
             
-            setTimeout(() => { status.innerText = "Verifying Secure Link..."; }, 1200);
-            setTimeout(() => { status.innerText = "Handshake Complete."; }, 2200);
+            setTimeout(() => { status.innerText = "Biometrics Verified..."; }, 1500);
+            setTimeout(() => { status.innerText = "Access Granted."; }, 2800);
             
             setTimeout(() => {
                 document.body.classList.add('ready');
-            }, 3000);
+            }, 3500);
         });
     </script>
 </body>
