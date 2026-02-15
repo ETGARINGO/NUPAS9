@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="icon" type="image/png" href="pro9.png">
+    <link rel="apple-touch-icon" href="pro9.png">
+    
+    <title>PRO9 Recruitment | Portal Status</title>
+    <style>
+        :root {
+            --pnp-blue: #003399;
+            --pnp-gold: #ffd700;
+            --dark-base: #010810;
+            --card-bg: rgba(2, 15, 30, 0.8);
+            --scan-light: rgba(255, 215, 0, 0.15);
+            --alert-red: #ff3e3e;
+            --text-muted: #a0aec0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            overflow: hidden; background-color: var(--dark-base);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: white;
+        }
+
+        /* Animated Background Mesh */
+        .bg-mesh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #001a4d 0%, var(--dark-base) 100%);
+            z-index: -1;
+        }
+
+        /* Scanline Overlay */
+        body::before {
+            content: " ";
+            display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 100; background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* --- BOOT SCREEN --- */
+        #boot-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 999;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        .logo-container {
+            width: 160px; height: 160px; margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo-container img {
+            width: 100%; filter: drop-shadow(0 0 20px rgba(0, 51, 153, 0.5));
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5)); transform: scale(1.02); }
+        }
+
+        .terminal-text {
+            color: var(--pnp-gold);
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 13px; letter-spacing: 3px;
+            text-shadow: 0 0 8px var(--pnp-gold);
+        }
+
+        /* --- MAIN UI --- */
+        .main-wrapper {
+            opacity: 0; transform: translateY(20px);
+            transition: all 0.8s ease-out;
+            height: 100vh; display: flex; flex-direction: column;
+        }
+
+        body.ready #boot-screen { transform: translateY(-100%); }
+        body.ready .main-wrapper { opacity: 1; transform: translateY(0); }
+
+        header {
+            background: rgba(0, 51, 153, 0.9);
+            padding: 20px; text-align: center;
+            border-bottom: 3px solid var(--pnp-gold);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        .header-title { margin: 0; font-size: 1.4rem; font-weight: 800; letter-spacing: 2px; }
+        .header-subtitle { color: var(--pnp-gold); font-size: 0.8rem; letter-spacing: 4px; margin-top: 5px; opacity: 0.9; }
+
+        /* --- STATUS CARD --- */
+        .content-area {
+            flex-grow: 1; display: flex;
+            justify-content: center; align-items: center;
+            padding: 25px;
+        }
+
+        .status-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 4px; /* Sharper edges look more "military/official" */
+            padding: 50px 30px;
+            max-width: 450px; width: 100%;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Warning stripe at top of card */
+        .status-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: repeating-linear-gradient(45deg, var(--pnp-gold), var(--pnp-gold) 10px, #000 10px, #000 20px);
+        }
+
+        .status-icon {
+            font-size: 60px; color: var(--alert-red); margin-bottom: 25px;
+            display: inline-block; animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        .status-title {
+            color: #fff; font-size: 1.7rem; font-weight: 700;
+            margin-bottom: 15px; text-transform: uppercase;
+        }
+
+        .status-message {
+            color: var(--text-muted); line-height: 1.7; font-size: 1.05rem;
+        }
+
+        .divider {
+            height: 1px; background: rgba(255, 215, 0, 0.2);
+            margin: 25px auto; width: 60%;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 15px; background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        /* System Badge */
+        .badge {
+            display: inline-block; padding: 4px 10px;
+            border: 1px solid var(--alert-red);
+            color: var(--alert-red); font-size: 0.7rem;
+            font-weight: bold; margin-bottom: 15px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-mesh"></div>
+
+    <div id="boot-screen">
+        <div class="logo-container">
+            <img src="pro9.png" alt="PRO9 Logo">
+        </div>
+        <div class="terminal-text" id="status-msg">INITIALIZING SECURE PROTOCOL...</div>
+    </div>
+
+    <div class="main-wrapper">
+        <header>
+            <h1 class="header-title">POLICE REGIONAL OFFICE 9</h1>
+            <div class="header-subtitle">ZAMBOANGA PENINSULA</div>
+        </header>
+
+        <div class="content-area">
+            <div class="status-card">
+                <div class="badge">SYSTEM STATUS: RESTRICTED</div>
+                <div class="status-icon">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <h2 class="status-title">Submissions Closed</h2>
+                <div class="divider"></div>
+                <p class="status-message">
+                    The recruitment application window for this period has officially <strong>concluded</strong>. 
+                </p>
+                <p class="status-message" style="font-size: 0.9rem; margin-top: 20px;">
+                    Please monitor the <a href="https://www.facebook.com/nuprecruitmentpage" target="_blank" rel="noopener noreferrer" style="color:var(--pnp-gold); text-decoration: none; font-weight: bold; border-bottom: 1px solid rgba(255, 215, 0, 0.3);">Official PRO9 Facebook Page</a> for the next cycle of recruitment announcements and updates.
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-text">
+                &copy; 2026 PNP Police Regional Office 9 | Information Technology Management Division
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const status = document.getElementById('status-msg');
+            const sequences = [
+                { t: 800, msg: "AUTHENTICATING SERVER..." },
+                { t: 1600, msg: "FETCHING PORTAL STATUS..." },
+                { t: 2200, msg: "ACCESS RESTRICTED: WINDOW CLOSED" }
+            ];
+
+            sequences.forEach(seq => {
+                setTimeout(() => { status.innerText = seq.msg; }, seq.t);
+            });
+
+            setTimeout(() => {
+                document.body.classList.add('ready');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
