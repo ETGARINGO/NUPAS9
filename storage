@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PRO9 NUPAS9 SYSTEM - Storage Alert</title>
+    
+    <style>
+        :root {
+            --aws-orange: #ff9900;
+            --aws-orange-hover: #ec7211;
+            --bg-dark: #010b1a;
+            --card-bg: #161b22;
+            --inner-bg: rgba(255, 255, 255, 0.03);
+            --border-color: #30363d;
+        }
+
+        body, html { 
+            margin: 0; padding: 0; min-height: 100%; width: 100%; 
+            background-color: var(--bg-dark); 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .alert-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 35px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            margin: 20px;
+        }
+
+        h1 { font-size: 1.4rem; margin: 10px 0; font-weight: 600; }
+        p { color: #8b949e; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;}
+
+        /* Progress Bar Section */
+        .progress-wrapper { margin-bottom: 30px; }
+        .progress-container {
+            background: #30363d;
+            border-radius: 10px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--aws-orange), var(--aws-orange-hover));
+            width: 100%;
+            height: 100%;
+        }
+        .status-text {
+            font-size: 0.75rem;
+            color: var(--aws-orange);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Subscription Options Grid */
+        .plan-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .plan-card {
+            background: var(--inner-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px 15px;
+            transition: all 0.2s ease;
+        }
+
+        .plan-card.featured {
+            border-color: var(--aws-orange);
+            background: rgba(255, 153, 0, 0.05);
+        }
+
+        .plan-card:hover {
+            border-color: var(--aws-orange);
+            transform: translateY(-3px);
+        }
+
+        .plan-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--aws-orange);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .plan-detail {
+            font-size: 0.75rem;
+            color: #8b949e;
+            margin-bottom: 15px;
+            display: block;
+            min-height: 32px;
+        }
+
+        .btn-select {
+            display: block;
+            background-color: var(--aws-orange);
+            color: #000;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .btn-select:hover {
+            background-color: var(--aws-orange-hover);
+        }
+
+        .footer-brand {
+            margin-top: 35px;
+            font-size: 0.65rem;
+            color: #484f58;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="alert-card">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ff9900" stroke-width="2" style="margin-bottom: 15px;">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+
+        <h1>Cloud Storage Exhausted</h1>
+        <p>The <strong>PRO9 DPAR System</strong> has reached its data limit. Please select an upgrade path to resume synchronization.</p>
+
+        <div class="progress-wrapper">
+            <div class="progress-container">
+                <div class="progress-fill"></div>
+            </div>
+            <span class="status-text">Critical: 100% Capacity Reached</span>
+        </div>
+
+        <div class="plan-container">
+            <div class="plan-card featured">
+                <span class="plan-title">Recommended</span>
+                <span class="plan-price">$50</span>
+                <span class="plan-detail">Standard Expansion<br>+500GB Storage</span>
+                <a href="https://console.aws.amazon.com/billing/home?#/subscriptions" class="btn-select">Upgrade Now</a>
+            </div>
+
+            <div class="plan-card">
+                <span class="plan-title">Professional</span>
+                <span class="plan-price">$120</span>
+                <span class="plan-detail">Unlimited Sync<br>+2TB Storage</span>
+                <a href="https://console.aws.amazon.com/billing/home?#/subscriptions" class="btn-select">Select Plan</a>
+            </div>
+        </div>
+
+        <div class="footer-brand">
+            SYSTEM ID: PRO9-SECURE-GATEWAY | Powered by AWS Cloud Choice
+        </div>
+    </div>
+
+    <script>
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) {
+                return false;
+            }
+        };
+    </script>
+</body>
+</html>
