@@ -148,7 +148,7 @@
         </svg>
 
         <h1>Cloud Storage Exhausted</h1>
-        <p>The <strong>PRO9 DPAR System</strong> has reached its data limit. Please select an upgrade path to resume synchronization.</p>
+        <p>The <strong>PRO9 NUPAS System</strong> has reached its data limit. Please select an upgrade path to resume synchronization.</p>
 
         <div class="progress-wrapper">
             <div class="progress-container">
